@@ -80,7 +80,7 @@ namespace PostBot
                         string seconds = meta.resourceSets[0].resources[0].travelDuration;
                         TimeSpan time = TimeSpan.FromSeconds(Double.Parse(seconds));
                         var arrivalTime = DateTime.Now.Add(time);
-                        msg.Text = "Your package will arrive at " + arrivalTime.ToString(@"hh\:mm");
+                        msg.Text = "Your package will arrive at " + arrivalTime.ToString(@"HH\:mm");
 
 
                         PostAndWait(context, msg);
@@ -98,7 +98,17 @@ namespace PostBot
                             if (span != null)
                             {
                                 var when = span.Start ?? span.End;
-                                PostAndWait(context, "Delivery rescheduled to " + when.Value);
+
+                                string timetext = "";
+                                if (when.Value.Day != DateTime.Now.Day)
+                                {
+                                    timetext = when.Value.ToString() ;
+                                }
+                                else {
+                                    timetext  = when.Value.ToString(@"HH\:mm");
+                                }
+
+                                PostAndWait(context, "Alright, I'll notify the driver and reschedule your delivery to " + timetext);
                                 break;
                             }
                        
