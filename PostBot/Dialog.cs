@@ -34,6 +34,8 @@ namespace PostBot
         const string entity_Set = "builtin.datetime.set";
         const string entity_Date = "builtin.datetime.date";
         const string entity_Money = "builtin.money";
+        const string entity_land = "land";
+
 
         const string entity_schedule = "builtin.datetime.set";
 
@@ -42,16 +44,25 @@ namespace PostBot
         const string intent_hi = "hi";
         const string intent_deliveryState = "DeliveryState";
         const string intent_changeDelivery = "ChangeDelivery";
+        const string intent_paketTarif = "PaketTarif";
+
 
         const string set_year = "XXXX";
         const string set_month = "XXXX-XX";
         const string set_day = "XXXX-XX-XX";
+
+
+        internal static IFormDialog<PaketTarif> MakeRootDialog(PaketTarif PaketTarif, List<EntityRecommendation> entities)
+        {
+            return new FormDialog<PaketTarif>(new PaketTarif(), PaketTarif.BuildForm, options: FormOptions.PromptInStart, entities: entities);
+        }
         public async Task MessageReceivedAsync(IDialogContext context, IAwaitable<Message> argument)
         {
             var message = await argument;
 
             string resp = "";
             LUISModel model = await GetEntityFromLUIS(message.Text);
+
 
             if (model.intents.Count() > 0)
             {
@@ -80,13 +91,13 @@ namespace PostBot
                         string seconds = meta.resourceSets[0].resources[0].travelDuration;
                         TimeSpan time = TimeSpan.FromSeconds(Double.Parse(seconds));
                         var arrivalTime = DateTime.Now.Add(time);
-                        msg.Text = "Your package will arrive at " + arrivalTime.ToString(@"hh\:mm");
+                        msg.Text = "Ihr Paket kommt um " + arrivalTime.ToString(@"hh\:mm");
 
 
                         PostAndWait(context, msg);
                         break;
                     case intent_changeDelivery:
-
+                        DateTime? when = DateTime.Now;
                         var hasDate = model.entities.Where(e => e.type == "builtin.datetime.time").FirstOrDefault();
                         if(hasDate != null)
                         {
@@ -97,14 +108,25 @@ namespace PostBot
                             var span = parser.Parse(hasDate.entity);
                             if (span != null)
                             {
-                                var when = span.Start ?? span.End;
-                                PostAndWait(context, "Delivery rescheduled to " + when.Value);
-                                break;
+                              when = span.Start ?? span.End;
+                             
                             }
                        
-                        }   
-                        
-                        PostAndWait(context, "Delivery will be sent to Am Europlatz 3 instead");
+
+                        }
+                        var hasLocation = model.entities.Where(e => e.type == "adress");
+                        if (hasLocation.FirstOrDefault() != null)
+                        { 
+                             
+
+                        }
+
+                        string loc = " ";
+                        foreach (var l in hasLocation) {
+                            loc += l.entity + " ";
+                        }
+                        PostAndWait(context, "  rescheduled to " + when.Value + loc);
+                      
 
                         break;
 
@@ -115,9 +137,22 @@ namespace PostBot
                         attachments.Add(new Attachment(contentUrl: q, contentType: "image/jpeg"));
 
                         m.Attachments = attachments;
-                        m.Text = "The nearest pickup station is Am Europlatz 3, Vienna";
+                        m.Text = "Die näheste Abholstation ist Am Europlatz 3, Vienna";
 
                         PostAndWait(context, m);
+                        break;
+                    case intent_paketTarif:
+
+                        List<EntityRecommendation> entities = new List<EntityRecommendation>();
+                        //get land
+                        Entity entity = model.entities.FirstOrDefault(e => e.type == entity_land);
+                        if (entity != null)
+                        {
+                            entities.Add(new EntityRecommendation(null, entity.entity, entity.type, entity.startIndex, entity.endIndex, entity.score, null));
+                        }
+
+                        IFormDialog<PaketTarif> tmp = MakeRootDialog(new PaketTarif(), entities: entities);
+                        context.Call(tmp, PaketTarifComplete);
                         break;
                     default:
                         PostAndWait(context, "Didn't get that");
@@ -126,12 +161,34 @@ namespace PostBot
             }
             else
             {
-                PostAndWait(context, "Didn't get that");
+                PostAndWait(context, "Leider nicht verstanden");
             }
 
         }
 
-      
+        private async Task PaketTarifComplete(IDialogContext context, IAwaitable<PaketTarif> result)
+        {
+            var t = await result;
+            int LandMult = 1;
+            if (!t.Land.ToLower().Equals("österreich")) {
+                LandMult = 2;
+            }
+            double preis = ((t.Breite + t.Height + t.Tiefe + t.Gewicht) * LandMult) / 10;
+
+
+            await context.PostAsync("**Sendungsangaben** " +
+                                    "\n\n* Gewicht: " + t.Gewicht + "kg " +
+                                    "\n\n* Abmessung: " + t.Height + " x " + t.Tiefe + " x " + t.Breite+
+                                    "\n\n* Land: " + t.Land +
+                                    "\n\n* Voraussichtliche Lieferzeit: 2 Tage" +
+                                    "\n\n\n\n **Kosten** " +
+                                    "\n\n* Paket: " + preis + "€" +
+                                     "\n\n*  Lkw Maut: " + preis * 0.02 + "€" +
+                                     "\n\n  **Preis** " + (preis + preis * 0.02 ) + "€"
+
+                                        );
+            context.Wait(MessageReceivedAsync);
+        }
 
 
         private async void PostAndWait(IDialogContext context, string resp)
