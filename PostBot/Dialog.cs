@@ -108,8 +108,7 @@ namespace PostBot
                             var span = parser.Parse(hasDate.entity);
                             if (span != null)
                             {
-                                var when = span.Start ?? span.End;
-                                
+                               
                                 if (when.Value.Hour < 18)
                                     PostAndWait(context, "Alright, I'll notify the driver and reschedule your delivery to " + when.Value.ToString(@"HH\:mm"));
                                 else
@@ -123,6 +122,7 @@ namespace PostBot
                             }
                        
                         }   
+
                         
                         PostAndWait(context, "Delivery will be sent to Am Europlatz 3 instead");
 
@@ -163,7 +163,16 @@ namespace PostBot
             }
 
         }
+        private static Message MakeMessage(string query, string text)
+        {
+            Message m = new Message();
+            List<Attachment> attachments = new List<Attachment>();
+            attachments.Add(new Attachment(contentUrl: query, contentType: "image/jpeg"));
 
+            m.Attachments = attachments;
+            m.Text = text;
+            return m;
+        }
         private async Task PaketTarifComplete(IDialogContext context, IAwaitable<PaketTarif> result)
         {
             var t = await result;
