@@ -52,7 +52,7 @@ namespace PostBot
         const string set_day = "XXXX-XX-XX";
 
 
-        internal static IFormDialog<PaketTarif> MakeRootDialog(PaketTarif PaketTarif, List<EntityRecommendation> entities)
+        internal static IFormDialog<PaketTarif> MakeRootDialog(PaketTarif p, List<EntityRecommendation> entities)
         {
             return new FormDialog<PaketTarif>(new PaketTarif(), PaketTarif.BuildForm, options: FormOptions.PromptInStart, entities: entities);
         }
@@ -110,21 +110,22 @@ namespace PostBot
                             {
                                
                                 if (when.Value.Hour < 18)
-                                    PostAndWait(context, "Alright, I'll notify the driver and reschedule your delivery to " + when.Value.ToString(@"HH\:mm"));
+                                    PostAndWait(context, "Okay, Zustellung geändert auf" + when.Value.ToString(@"HH\:mm"));
                                 else
                                 {                         
                                     PostAndWait(context, MakeMessage("http://dev.virtualearth.net/REST/V1/Imagery/Map/Road/Am%20Europlatz%20Vienna?mapLayer=TrafficFlow&key=AgArU18mPZIHjbt9F0l5_StVXlcXITxAbGRYl07EEUzOLiXIRYLBzWAiBTeTYNcQ",
-                                        "Sorry, that's not possible. We'll deliver the package to your nearest pickup station at Am Europlatz 3, Vienna"));
+                                        "Das ist leider nicht möglich. Ihr Paket wird zu ihrer nähesten Abholstation gelifiert. Am Europlatz 3, Vienna"));
                                 }
 
 
                                 break;
                             }
                        
-                        }   
+                        }
 
-                        
-                        PostAndWait(context, "Delivery will be sent to Am Europlatz 3 instead");
+
+                        PostAndWait(context, MakeMessage("http://dev.virtualearth.net/REST/V1/Imagery/Map/Road/Am%20Europlatz%20Vienna?mapLayer=TrafficFlow&key=AgArU18mPZIHjbt9F0l5_StVXlcXITxAbGRYl07EEUzOLiXIRYLBzWAiBTeTYNcQ",
+                                                 "Ihr Paket wird zu ihrer nähesten Abholstation gelifiert. Am Europlatz 3, Vienna"));
 
                         break;
 
