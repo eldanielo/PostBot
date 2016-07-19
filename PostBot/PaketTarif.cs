@@ -27,21 +27,21 @@ namespace PostBot
                             .SetActive((state) => state.Tiefe == 0))
                             .Field(new FieldReflector<PaketTarif>(nameof(Breite))
                             .SetActive((state) => state.Breite == 0))
-                            .Field(nameof(comment))
+                    
               
                     .Build();
 
         }
+        [Template(TemplateUsage.String, "Was ist das Zielland?")]
         public string Land { get; set; }
+        [Template(TemplateUsage.String, "Wie viel wiegt das Paket?")]
         public double Gewicht  { get; set; }
-
+        [Template(TemplateUsage.String, "Wie hoch ist das Paket?")]
         public double Height { get; set; }
-
+        [Template(TemplateUsage.String, "Wie breit ist das Paket?")]
         public double Breite { get; set; }
-
+        [Template(TemplateUsage.String, "Wie tief ist das Paket?")]
         public double Tiefe { get; set; }
-
-        public string comment { get; set; }
 
     }
 }

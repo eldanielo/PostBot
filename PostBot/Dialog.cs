@@ -91,7 +91,7 @@ namespace PostBot
                         string seconds = meta.resourceSets[0].resources[0].travelDuration;
                         TimeSpan time = TimeSpan.FromSeconds(Double.Parse(seconds));
                         var arrivalTime = DateTime.Now.Add(time);
-                        msg.Text = "Ihr Paket befindet sich im Moment in" + start + " und wird um " + arrivalTime.ToString(@"HH\:mm") + " ankommen.";
+                        msg.Text = "Ihr Paket befindet sich im Moment in " + start + " und wird um " + arrivalTime.ToString(@"HH\:mm") + " ankommen.";
 
 
                         PostAndWait(context, msg);
@@ -110,7 +110,7 @@ namespace PostBot
                             {
                                
                                 if (when.Value.Hour < 18)
-                                    PostAndWait(context, "Okay, Zustellung geändert auf" + when.Value.ToString(@"HH\:mm"));
+                                    PostAndWait(context, "Okay, Zustellung geändert auf " + when.Value.ToString(@"HH\:mm"));
                                 else
                                 {                         
                                     PostAndWait(context, MakeMessage("http://dev.virtualearth.net/REST/V1/Imagery/Map/Road/Am%20Europlatz%20Vienna?mapLayer=TrafficFlow&key=AgArU18mPZIHjbt9F0l5_StVXlcXITxAbGRYl07EEUzOLiXIRYLBzWAiBTeTYNcQ",
