@@ -32,15 +32,15 @@ namespace PostBot
                     .Build();
 
         }
-        [Template(TemplateUsage.String, "Was ist das Zielland?")]
+        [Prompt("Was ist das Zielland?")]
         public string Land { get; set; }
-        [Template(TemplateUsage.String, "Wie viel wiegt das Paket?")]
+        [Prompt("Wie viel wiegt das Paket?")]
         public double Gewicht  { get; set; }
-        [Template(TemplateUsage.String, "Wie hoch ist das Paket?")]
+        [Prompt("Wie hoch ist das Paket?")]
         public double Height { get; set; }
-        [Template(TemplateUsage.String, "Wie breit ist das Paket?")]
+        [Prompt("Wie breit ist das Paket?")]
         public double Breite { get; set; }
-        [Template(TemplateUsage.String, "Wie tief ist das Paket?")]
+        [Prompt("Wie tief ist das Paket?")]
         public double Tiefe { get; set; }
 
     }
