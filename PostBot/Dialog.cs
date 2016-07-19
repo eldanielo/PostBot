@@ -91,7 +91,7 @@ namespace PostBot
                         string seconds = meta.resourceSets[0].resources[0].travelDuration;
                         TimeSpan time = TimeSpan.FromSeconds(Double.Parse(seconds));
                         var arrivalTime = DateTime.Now.Add(time);
-                        msg.Text = "Your package is currently in " + start + " and will arrive at " + arrivalTime.ToString(@"HH\:mm");
+                        msg.Text = "Ihr Paket befindet sich im Moment in" + start + " und wird um " + arrivalTime.ToString(@"HH\:mm") + " ankommen.";
 
 
                         PostAndWait(context, msg);
