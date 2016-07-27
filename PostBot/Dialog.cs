@@ -91,7 +91,7 @@ namespace PostBot
                         string seconds = meta.resourceSets[0].resources[0].travelDuration;
                         TimeSpan time = TimeSpan.FromSeconds(Double.Parse(seconds));
                         var arrivalTime = DateTime.Now.Add(time);
-                        msg.Text = "Ihr Paket befindet sich im Moment in " + start + " und wird um " + arrivalTime.ToString(@"HH\:mm") + " ankommen.";
+                        msg.Text = "Ihr Paket befindet sich im Moment in " + start + " und \nwird um " + arrivalTime.ToString(@"HH\:mm") + " ankommen.";
 
 
                         PostAndWait(context, msg);
@@ -125,7 +125,7 @@ namespace PostBot
 
 
                         PostAndWait(context, MakeMessage("http://dev.virtualearth.net/REST/V1/Imagery/Map/Road/Am%20Europlatz%20Vienna?mapLayer=TrafficFlow&key=AgArU18mPZIHjbt9F0l5_StVXlcXITxAbGRYl07EEUzOLiXIRYLBzWAiBTeTYNcQ",
-                                                 "Ihr Paket wird zu ihrer nähesten Abholstation gelifiert. Am Europlatz 3, Vienna"));
+                                                 "Ihr Paket wird zu ihrer nähesten Abholstation \ngelifiert. Am Europlatz 3, Vienna"));
 
                         break;
 
