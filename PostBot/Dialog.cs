@@ -114,7 +114,7 @@ namespace PostBot
                                 else
                                 {                         
                                     PostAndWait(context, MakeMessage("http://dev.virtualearth.net/REST/V1/Imagery/Map/Road/Am%20Europlatz%20Vienna?mapLayer=TrafficFlow&key=AgArU18mPZIHjbt9F0l5_StVXlcXITxAbGRYl07EEUzOLiXIRYLBzWAiBTeTYNcQ",
-                                        "Das ist leider nicht möglich. Ihr Paket wird zu ihrer nähesten Abholstation gelifiert. Am Europlatz 3, Vienna"));
+                                        "Das ist leider nicht möglich. Ihr Paket wird zu ihrer nähesten Abholstation geliefert. Am Europlatz 3, Vienna"));
                                 }
 
 
