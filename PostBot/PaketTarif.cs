@@ -34,7 +34,7 @@ namespace PostBot
         }
         [Prompt("Was ist das Zielland?")]
         public string Land { get; set; }
-        [Prompt("Wie viel wiegt das Paket?")]
+        [Prompt("Wie viel wiegt das Paket? ")]
         public double Gewicht  { get; set; }
         [Prompt("Wie hoch ist das Paket?")]
         public double Height { get; set; }
