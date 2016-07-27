@@ -17,16 +17,8 @@ namespace PostBot
 
 
             return new FormBuilder<PaketTarif>(true)
-                      .Field(new FieldReflector<PaketTarif>(nameof(Land))
-                            .SetActive((state) => state.Land == null))
                              .Field(new FieldReflector<PaketTarif>(nameof(Gewicht))
                             .SetActive((state) => state.Gewicht == 0))
-                             .Field(new FieldReflector<PaketTarif>(nameof(Height))
-                            .SetActive((state) => state.Height == 0))
-                             .Field(new FieldReflector<PaketTarif>(nameof(Tiefe))
-                            .SetActive((state) => state.Tiefe == 0))
-                            .Field(new FieldReflector<PaketTarif>(nameof(Breite))
-                            .SetActive((state) => state.Breite == 0))
                     
               
                     .Build();

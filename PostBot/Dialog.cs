@@ -144,12 +144,7 @@ namespace PostBot
 
                         List<EntityRecommendation> entities = new List<EntityRecommendation>();
                         //get land
-                        Entity entity = model.entities.FirstOrDefault(e => e.type == entity_land);
-                        if (entity != null)
-                        {
-                            entities.Add(new EntityRecommendation(null, entity.entity, entity.type, entity.startIndex, entity.endIndex, entity.score, null));
-                        }
-
+                  
                         IFormDialog<PaketTarif> tmp = MakeRootDialog(new PaketTarif(), entities: entities);
                         context.Call(tmp, PaketTarifComplete);
                         break;
@@ -177,6 +172,10 @@ namespace PostBot
         private async Task PaketTarifComplete(IDialogContext context, IAwaitable<PaketTarif> result)
         {
             var t = await result;
+            t.Land = "Österreich";
+            t.Height = 1;
+            t.Tiefe = 1;
+            t.Breite = 1;
             int LandMult = 1;
             if (!t.Land.ToLower().Equals("österreich")) {
                 LandMult = 2;
