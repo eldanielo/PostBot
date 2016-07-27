@@ -71,7 +71,7 @@ namespace PostBot
                     case intent_hi:
 
 
-                        await context.PostAsync("Hallo! Versuchen Sie: \"Wann kommt mein Paket?\"\n\nor: \"Liefere das Paket zu meinem Nachbar\"");
+                        await context.PostAsync("Hallo! Versuchen Sie: \"Wann kommt mein Paket?\"\n\noder: \"Liefere mein Paket zur nähesten Abholstation\"");
 
                         context.Wait(MessageReceivedAsync);
                         break;
